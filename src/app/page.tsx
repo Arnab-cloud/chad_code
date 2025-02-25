@@ -11,10 +11,9 @@ export default function Home() {
 
 	const fetchCodes = useCallback(async () => {
 		try {
-			const result = await axios.get<ApiResponse>(
-				`http://localhost:3000/api/getCodes`
-			);
+			const result = await axios.get<ApiResponse>(`api/getCodes`);
 
+			console.log("result:", result.data.filenames);
 			if (result.data.filenames) {
 				setFilenames({ names: result.data.filenames });
 			}

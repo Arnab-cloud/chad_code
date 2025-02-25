@@ -51,10 +51,7 @@ export function CForm() {
 		// ✅ This will be type-safe and validated.
 		// console.log(values);
 		try {
-			await axios.post<ApiResponse>(
-				`http://localhost:3000/api/addCode`,
-				values
-			);
+			await axios.post<ApiResponse>(`api/addCode`, values);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 

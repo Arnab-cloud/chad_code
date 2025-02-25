@@ -17,7 +17,6 @@ export async function GET() {
 		}
 
 		const res = codes.map((val) => val.fileName);
-		console.log(res);
 		// console.log(classDetails);
 
 		return Response.json(

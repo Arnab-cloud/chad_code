@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 		// Create a URL object to extract query parameters
 		const { searchParams } = new URL(request.url);
 		const name = searchParams.get("filename");
-		console.log(name);
+		// console.log(name);
 		await dbConnect();
 
 		const codes = await CodesModel.findOne({ fileName: name });

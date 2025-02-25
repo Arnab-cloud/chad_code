@@ -19,7 +19,7 @@ const CodePage = async ({
 		const res = await axios.get<ApiResponse>(
 			`http://localhost:3000/api/getData?filename=${filename}`
 		);
-		console.log(res);
+		// console.log(res);
 		const file = res.data.code;
 		if (!file) {
 			return <div>Bye</div>;

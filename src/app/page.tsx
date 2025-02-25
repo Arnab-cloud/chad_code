@@ -1,8 +1,6 @@
 import CCard from "@/components/ccard";
 import Navbar from "@/components/navbar";
-import Image from "next/image";
 import { promises as fs } from "fs";
-import { get } from "http";
 
 const getFiles = async () => {
 	const files = await fs.readdir(process.cwd() + "/public/codes", "utf-8");

@@ -1,11 +1,4 @@
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 const CCard: React.FC<{ fileName: string }> = ({ fileName }) => {

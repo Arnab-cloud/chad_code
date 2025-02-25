@@ -15,9 +15,11 @@ const CodePage = async ({
 	params: Promise<{ filename: string }>;
 }) => {
 	const { filename } = await params;
+	const base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
+	console.log(filename);
 	try {
 		const res = await axios.get<ApiResponse>(
-			`api/getData?filename=${filename}`
+			`${base_url}/api/getData?filename=${filename}`
 		);
 		// console.log(res);
 		const file = res.data.code;
@@ -45,6 +47,7 @@ const CodePage = async ({
 		);
 	} catch (error) {
 		const axiosError = error as AxiosError<ApiResponse>;
+		console.log("Error happened", error);
 
 		return <div>{axiosError.response?.data.message}</div>;
 	}

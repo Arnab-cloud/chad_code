@@ -5,10 +5,11 @@ export async function GET(request: Request) {
 	try {
 		// const {filename} = params;
 
+		// console.log("is is even happening");
 		// Create a URL object to extract query parameters
 		const { searchParams } = new URL(request.url);
 		const name = searchParams.get("filename");
-		// console.log(name);
+		// console.log("from api", name);
 		await dbConnect();
 
 		const codes = await CodesModel.findOne({ fileName: name });

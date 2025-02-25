@@ -2,12 +2,11 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 const CCard: React.FC<{ fileName: string }> = ({ fileName }) => {
-	const fileNameWithoutExt = fileName.substring(0, fileName.indexOf("."));
 	return (
-		<Link href={`/${fileNameWithoutExt}`}>
+		<Link href={`/${fileName}`}>
 			<Card>
 				<CardHeader>
-					<CardTitle>{fileNameWithoutExt}</CardTitle>
+					<CardTitle>{fileName}</CardTitle>
 				</CardHeader>
 			</Card>
 		</Link>

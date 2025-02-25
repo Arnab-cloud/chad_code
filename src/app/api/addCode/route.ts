@@ -1,26 +1,47 @@
-import { promises as fs } from "fs";
+import dbConnect from "@/lib/dbConnect";
+import CodesModel from "@/models/Codes";
 
 export async function POST(request: Request) {
 	const { filename, content, description } = await request.json();
 
-	const values_to_be_written = {
-		filename,
-		content,
-		description,
-		dateCreated: Date.now(),
-	};
+	try {
+		await dbConnect();
+		const file_old = await CodesModel.findOne({
+			fileName: filename,
+		});
+		if (file_old) {
+			return Response.json(
+				{
+					success: false,
+					message: "Already exists",
+				},
+				{ status: 401 }
+			);
+		}
 
-	console.log(filename);
+		const newfile = new CodesModel({
+			fileName: filename,
+			content,
+			description,
+		});
 
-	await fs.writeFile(
-		process.cwd() +
-			"/public/codes/" +
-			filename.substring(0, filename.indexOf(".")) +
-			".json",
-		JSON.stringify(values_to_be_written)
-	);
-	return Response.json({
-		success: true,
-		message: "file added",
-	});
+		await newfile.save();
+
+		return Response.json(
+			{
+				success: true,
+				message: "code added successfully",
+			},
+			{ status: 200 }
+		);
+	} catch (error) {
+		console.log("Error adding code", error);
+		return Response.json(
+			{
+				success: false,
+				message: "Error adding code",
+			},
+			{ status: 400 }
+		);
+	}
 }

@@ -16,12 +16,14 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { CodeFile } from "@/models/Codes";
 
 export interface ApiResponse {
 	success: boolean;
 	message: string;
+	filenames?: [string];
+	code?: CodeFile;
 }
-
 const formSchema = z.object({
 	filename: z
 		.string()

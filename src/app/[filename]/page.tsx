@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/components/cform";
 import Navbar from "@/components/navbar";
 import {
 	Card,
@@ -6,7 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { promises as fs } from "fs";
+import axios, { AxiosError } from "axios";
 
 const CodePage = async ({
 	params,
@@ -14,32 +15,41 @@ const CodePage = async ({
 	params: Promise<{ filename: string }>;
 }) => {
 	const { filename } = await params;
-	const file = await fs
-		.readFile(
-			process.cwd() + "/public/codes/" + `${filename}` + ".json",
-			"utf-8"
-		)
-		.then((data) => JSON.parse(data))
-		.catch((err) => console.log(err));
+	try {
+		const res = await axios.get<ApiResponse>(
+			`http://localhost:3000/api/getData?filename=${filename}`
+		);
+		console.log(res);
+		const file = res.data.code;
+		if (!file) {
+			return <div>Bye</div>;
+		}
+
+		return (
+			<div>
+				<div>
+					<Navbar></Navbar>
+				</div>
+				<div className="flex items-center justify-center p-4">
+					<Card className="w-fit">
+						<CardHeader>
+							<CardTitle>{file.fileName}</CardTitle>
+							<CardDescription>
+								{file.description}
+							</CardDescription>
+						</CardHeader>
+						<CardContent>{file.content}</CardContent>
+					</Card>
+				</div>
+			</div>
+		);
+	} catch (error) {
+		const axiosError = error as AxiosError<ApiResponse>;
+
+		return <div>{axiosError.response?.data.message}</div>;
+	}
 
 	// console.log(file);
-
-	return (
-		<div>
-			<div>
-				<Navbar></Navbar>
-			</div>
-			<div className="flex items-center justify-center p-4">
-				<Card className="w-fit">
-					<CardHeader>
-						<CardTitle>{file.filename}</CardTitle>
-						<CardDescription>{file.description}</CardDescription>
-					</CardHeader>
-					<CardContent>{file.content}</CardContent>
-				</Card>
-			</div>
-		</div>
-	);
 };
 
 export default CodePage;

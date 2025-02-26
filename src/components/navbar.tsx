@@ -16,7 +16,7 @@ const Navbar: React.FC<navbarProps> = ({
 		<nav className="p-3 px-5 shadow-md sticky top-0 bg-white z-10 flex justify-center">
 			<div className="container mx-auto flex flex-row justify-between items-center">
 				<Link href="/" className="text-xl font-bold mb-4 md:mb-0 ">
-					chad_code
+					chad code
 				</Link>
 			</div>
 			<div>

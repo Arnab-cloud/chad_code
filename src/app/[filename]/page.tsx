@@ -27,9 +27,9 @@ const CodePage = async ({
 		}
 
 		return (
-			<div className="flex flex-col h-svh justify-between">
+			<div className="flex flex-col gap-8">
 				<div>
-					<Navbar link="/" displayText="Home"></Navbar>
+					<Navbar link="/addForm" displayText="Add"></Navbar>
 				</div>
 				<div className="flex items-center justify-center p-4">
 					<Card className="w-fit">

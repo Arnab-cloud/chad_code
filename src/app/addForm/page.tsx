@@ -3,7 +3,7 @@ import Navbar from "@/components/navbar";
 
 export default async function AddFrom() {
 	return (
-		<div className="flex flex-col h-svh gap-12">
+		<div className="flex flex-col gap-12">
 			<div>
 				<Navbar link="/" displayText="Home"></Navbar>
 			</div>

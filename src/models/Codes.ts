@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 export interface CodeFile extends Document {
 	fileName: string;
+	fileType: string;
 	content: string;
 	description?: string;
 	createdAt: Date;
@@ -8,6 +9,11 @@ export interface CodeFile extends Document {
 
 const FilesSchema: Schema<CodeFile> = new Schema({
 	fileName: {
+		type: String,
+		required: [true, "filename is required"],
+		trim: true,
+	},
+	fileType: {
 		type: String,
 		required: [true, "filename is required"],
 		trim: true,

@@ -2,7 +2,8 @@ import dbConnect from "@/lib/dbConnect";
 import CodesModel from "@/models/Codes";
 
 export async function POST(request: Request) {
-	const { filename, content, description } = await request.json();
+	const { filename, language, code, description } = await request.json();
+	// console.log(filename, language, code, description);
 
 	try {
 		await dbConnect();
@@ -21,7 +22,8 @@ export async function POST(request: Request) {
 
 		const newfile = new CodesModel({
 			fileName: filename,
-			content,
+			content: code,
+			fileType: language,
 			description,
 		});
 

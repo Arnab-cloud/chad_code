@@ -1,5 +1,4 @@
 import { ApiResponse } from "@/components/cform";
-import Navbar from "@/components/navbar";
 import {
 	Card,
 	CardContent,
@@ -28,9 +27,9 @@ const CodePage = async ({
 
 		return (
 			<div className="flex flex-col gap-8">
-				<div>
+				{/* <div>
 					<Navbar link="/addForm" displayText="Add"></Navbar>
-				</div>
+				</div> */}
 				<div className="flex items-center justify-center p-4">
 					<Card className="w-fit">
 						<CardHeader>

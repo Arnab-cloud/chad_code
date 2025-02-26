@@ -1,49 +1,41 @@
-"use client";
 import CCard from "@/components/ccard";
-import { ApiResponse } from "@/components/cform";
-import Navbar from "@/components/navbar";
-import axios, { AxiosError } from "axios";
-import { useCallback, useEffect, useState } from "react";
 
-export default function Home() {
-	// await getFiles();
-	const [filenames, setFilenames] = useState<{ names: [string] }>();
+export default async function Home() {
+	try {
+		const url = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-	const fetchCodes = useCallback(async () => {
-		try {
-			const result = await axios.get<ApiResponse>(`api/getCodes`);
+		/**
+		 * As i passed {cache: "no-store"} as a parameter the problem with the dynamic route is gone. I don't know if that is the reason or some thing else
+		 */
+		const filenames = await fetch(`${url}/api/getCodes`, {
+			cache: "no-store",
+		})
+			.then((data) => data.json())
+			.then((data) => data?.filenames as [string]);
 
-			console.log("result:", result.data.filenames);
-			if (result.data.filenames) {
-				setFilenames({ names: result.data.filenames });
-			}
-		} catch (error) {
-			const axiosError = error as AxiosError<ApiResponse>;
-
-			return <div>{axiosError.response?.data.message}</div>;
+		// console.log(filenames);
+		if (filenames) {
+			return (
+				<div className="flex flex-col">
+					{/* <div className="controls">
+						<Navbar link="/addForm" displayText="Add"></Navbar>
+					</div> */}
+					<div className="p-4 flex gap-2 flex-wrap">
+						{filenames &&
+							filenames.map((val, idx) => (
+								<div key={idx} className="min-w-36">
+									<CCard fileName={val}></CCard>
+								</div>
+							))}
+					</div>
+				</div>
+			);
 		}
-	}, []);
-	// console.log(filenames);
-	useEffect(() => {
-		fetchCodes();
-	}, [fetchCodes]);
 
-	return (
-		<div className="flex flex-col">
-			<div className="controls">
-				<Navbar link="/addForm" displayText="Add"></Navbar>
-			</div>
-			<div className="p-4 flex gap-2 flex-wrap">
-				{filenames?.names &&
-					filenames.names.map((val, idx) => (
-						<div key={idx} className="min-w-36">
-							<CCard fileName={val}></CCard>
-						</div>
-					))}
-			</div>
-		</div>
-	);
-	// console.log("Classes", classes);
+		return <div>No data </div>;
+	} catch (error) {
+		console.log("error:", error);
 
-	// console.log(files);
+		return <div>No data + error</div>;
+	}
 }

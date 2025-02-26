@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CodeFile } from "@/models/Codes";
+import { toast } from "sonner";
 
 export interface ApiResponse {
 	success: boolean;
@@ -51,11 +52,12 @@ export function CForm() {
 		// ✅ This will be type-safe and validated.
 		// console.log(values);
 		try {
-			await axios.post<ApiResponse>(`api/addCode`, values);
+			const res = await axios.post<ApiResponse>(`api/addCode`, values);
+			toast(res.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 
-			return <div>{axiosError.response?.data.message}</div>;
+			toast(axiosError.response?.data.message);
 		}
 	}
 

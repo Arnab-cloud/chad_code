@@ -3,11 +3,11 @@ import Navbar from "@/components/navbar";
 
 export default async function AddFrom() {
 	return (
-		<div>
+		<div className="flex flex-col h-svh gap-12">
 			<div>
-				<Navbar></Navbar>
+				<Navbar link="/" displayText="Home"></Navbar>
 			</div>
-			<div className="w-full">
+			<div className="w-full flex justify-center">
 				<CForm></CForm>
 			</div>
 		</div>

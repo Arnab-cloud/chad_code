@@ -31,12 +31,12 @@ export default function Home() {
 	return (
 		<div className="flex flex-col">
 			<div className="controls">
-				<Navbar></Navbar>
+				<Navbar link="/addForm" displayText="Add"></Navbar>
 			</div>
-			<div className="w-full p-4 flex gap-2">
+			<div className="p-4 flex gap-2 flex-wrap">
 				{filenames?.names &&
 					filenames.names.map((val, idx) => (
-						<div key={idx} className="w-52 gap-2">
+						<div key={idx} className="min-w-36">
 							<CCard fileName={val}></CCard>
 						</div>
 					))}

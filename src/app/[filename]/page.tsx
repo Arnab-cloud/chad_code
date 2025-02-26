@@ -16,7 +16,6 @@ const CodePage = async ({
 }) => {
 	const { filename } = await params;
 	const base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
-	console.log(filename);
 	try {
 		const res = await axios.get<ApiResponse>(
 			`${base_url}/api/getData?filename=${filename}`
@@ -28,9 +27,9 @@ const CodePage = async ({
 		}
 
 		return (
-			<div>
+			<div className="flex flex-col h-svh justify-between">
 				<div>
-					<Navbar></Navbar>
+					<Navbar link="/" displayText="Home"></Navbar>
 				</div>
 				<div className="flex items-center justify-center p-4">
 					<Card className="w-fit">

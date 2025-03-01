@@ -7,6 +7,27 @@ export interface CodeFile extends Document {
 	createdAt: Date;
 }
 
+export interface ApiResponse {
+	success: boolean;
+	message: string;
+	listFiles?: [fileDesc];
+	code?: CodeFile;
+}
+
+export interface fileContent {
+	filename: string;
+	content: string;
+	description?: string;
+	filetype: string;
+}
+
+export interface fileDesc {
+	fId: string;
+	filename: string;
+	filetype: string;
+	description?: string;
+}
+
 const FilesSchema: Schema<CodeFile> = new Schema({
 	fileName: {
 		type: String,

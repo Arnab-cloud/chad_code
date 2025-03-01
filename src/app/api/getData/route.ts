@@ -3,16 +3,12 @@ import CodesModel from "@/models/Codes";
 
 export async function GET(request: Request) {
 	try {
-		// const {filename} = params;
-
-		// console.log("is is even happening");
-		// Create a URL object to extract query parameters
 		const { searchParams } = new URL(request.url);
-		const name = searchParams.get("filename");
+		const fId = searchParams.get("fid");
 		// console.log("from api", name);
 		await dbConnect();
 
-		const codes = await CodesModel.findOne({ fileName: name });
+		const codes = await CodesModel.findOne({ _id: fId });
 		if (!codes) {
 			return Response.json(
 				{

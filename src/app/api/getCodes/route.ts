@@ -5,7 +5,12 @@ export async function GET() {
 	try {
 		await dbConnect();
 
-		const codes = await CodesModel.find({}, "fileName");
+		const codes = await CodesModel.find(
+			{},
+			{ content: 0, __v: 0, createdAt: 0 }
+		).sort({
+			createdAt: "desc",
+		});
 		if (!codes) {
 			return Response.json(
 				{
@@ -16,14 +21,21 @@ export async function GET() {
 			);
 		}
 
-		const res = codes.map((val) => val.fileName);
+		const res = codes.map((val) => {
+			return {
+				fId: val._id,
+				filename: val.fileName,
+				filetype: val.fileType,
+				description: val.description,
+			};
+		});
 		// console.log(classDetails);
 
 		return Response.json(
 			{
 				success: true,
 				message: "classes acquired",
-				filenames: res,
+				listFiles: res,
 			},
 			{ status: 200 }
 		);

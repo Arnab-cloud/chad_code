@@ -20,8 +20,10 @@ import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import SelectOptions from "@/components/getSelectOpts";
 import { toast } from "sonner";
 import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/components/cform";
+
 import { editor } from "monaco-editor";
+import { Loader2 } from "lucide-react";
+import { ApiResponse } from "@/models/Codes";
 
 // Define a schema for our form using Zod
 const formSchema = z.object({
@@ -38,6 +40,7 @@ export default function CodeForm() {
 	const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
 	const [editorFocused, setEditorFocused] = useState(false);
 	const [lan, setLan] = useState(defaultLan);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const form = useForm<formData>({
 		resolver: zodResolver(formSchema),
@@ -65,15 +68,18 @@ export default function CodeForm() {
 		// if (editorRef.current) {
 		// 	data.code = editorRef.current.getValue();
 		// }
-		console.log("Form Data:", data);
+		// console.log("Form Data:", data);
 		// Further processing (e.g., sending data to an API) goes here
 		try {
+			setIsSubmitting(true);
 			const res = await axios.post<ApiResponse>(`api/addCode`, data);
 			toast(res.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 
 			toast(axiosError.response?.data.message);
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
@@ -176,7 +182,14 @@ export default function CodeForm() {
 					)}
 				/>
 
-				<Button type="submit">Submit</Button>
+				<Button type="submit" disabled={isSubmitting}>
+					{isSubmitting ? "submitting..." : "submit"}
+					{isSubmitting && (
+						<p>
+							<Loader2 />
+						</p>
+					)}
+				</Button>
 			</form>
 		</Form>
 	);

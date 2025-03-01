@@ -43,7 +43,7 @@ const CodeBlock = memo(
 );
 
 const CodePage = () => {
-	const { filename } = useParams<{ filename: string }>();
+	const { fid } = useParams<{ fid: string }>();
 	// console.log(params);
 	// const [isCopied, setIsCopied] = useState(false);
 	const [fileDetails, setFileDetails] = useState<fileDetailsProps>();
@@ -51,9 +51,7 @@ const CodePage = () => {
 
 	const fetchFileDetails = useCallback(async () => {
 		try {
-			const res = await axios.get<ApiResponse>(
-				`/api/getData?filename=${filename}`
-			);
+			const res = await axios.get<ApiResponse>(`/api/getData?fid=${fid}`);
 			// console.log(res);
 			const file = res.data.code;
 			if (!file) {
@@ -72,11 +70,11 @@ const CodePage = () => {
 
 			return <div>{axiosError.response?.data.message}</div>;
 		}
-	}, [filename]);
+	}, [fid]);
 
 	useEffect(() => {
 		fetchFileDetails();
-	}, [fetchFileDetails, filename]);
+	}, [fetchFileDetails, fid]);
 
 	if (fileDetails) {
 		return (

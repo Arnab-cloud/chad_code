@@ -7,18 +7,18 @@ export async function POST(request: Request) {
 
 	try {
 		await dbConnect();
-		const file_old = await CodesModel.findOne({
-			fileName: filename,
-		});
-		if (file_old) {
-			return Response.json(
-				{
-					success: false,
-					message: "Already exists",
-				},
-				{ status: 401 }
-			);
-		}
+		// const file_old = await CodesModel.findOne({
+		// 	fileName: filename,
+		// });
+		// if (file_old) {
+		// 	return Response.json(
+		// 		{
+		// 			success: false,
+		// 			message: "Already exists",
+		// 		},
+		// 		{ status: 401 }
+		// 	);
+		// }
 
 		const newfile = new CodesModel({
 			fileName: filename,

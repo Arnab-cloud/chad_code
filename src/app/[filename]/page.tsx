@@ -25,12 +25,12 @@ const CodePage = () => {
 	// console.log(params);
 	// const [isCopied, setIsCopied] = useState(false);
 	const [fileDetails, setFileDetails] = useState<fileDetailsProps>();
-	const base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
+	// const base_url = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 	const fetchFileDetails = useCallback(async () => {
 		try {
 			const res = await axios.get<ApiResponse>(
-				`${base_url}/api/getData?filename=${filename}`
+				`/api/getData?filename=${filename}`
 			);
 			// console.log(res);
 			const file = res.data.code;
@@ -50,7 +50,7 @@ const CodePage = () => {
 
 			return <div>{axiosError.response?.data.message}</div>;
 		}
-	}, [base_url, filename]);
+	}, [filename]);
 
 	useEffect(() => {
 		fetchFileDetails();

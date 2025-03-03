@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -9,10 +10,15 @@ import {
 } from "@/components/ui/card";
 import { ApiResponse } from "@/models/Codes";
 import axios, { AxiosError } from "axios";
+import { Check, CopyIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { memo, useCallback, useEffect, useState } from "react";
 // import dynamic from "next/dynamic";
-import { dracula, CopyBlock } from "react-code-blocks";
+// import { dracula, CopyBlock } from "react-code-blocks";
+
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { toast } from "sonner";
 
 interface fileDetailsProps {
 	filename: string;
@@ -29,18 +35,58 @@ const CodeBlock = memo(
 		content: string;
 		filetype?: string;
 	}) => {
-		// const [isCopied, setIsCopied] = useState(false);
+		const [isCopied, setIsCopied] = useState(false);
+		const handleCopy = useCallback(async () => {
+			if (navigator.clipboard) {
+				await navigator.clipboard
+					.writeText(content)
+					.then(() => {
+						console.log("copied");
+						setIsCopied(true);
+						setTimeout(() => {
+							console.log("reset");
+							setIsCopied(false);
+						}, 2000);
+					})
+					.catch(() => {
+						toast.error("Failed to copy");
+					});
+			} else {
+				const textArea = document.createElement("textarea");
+				textArea.value = content;
+				document.body.appendChild(textArea);
+				textArea.select();
+				document.execCommand("copy");
+				document.body.removeChild(textArea);
+
+				console.log("copied");
+				setIsCopied(true);
+				setTimeout(() => {
+					console.log("reset");
+					setIsCopied(false);
+				}, 2000);
+			}
+		}, []);
+		// console.log(SyntaxHighlighter.supportedLanguages);
 		return (
-			<CopyBlock
-				text={content}
-				language={filetype}
-				showLineNumbers={true}
-				theme={dracula}
-				wrapLongLines
-			/>
+			<div className="relative">
+				<SyntaxHighlighter
+					language={filetype}
+					style={dracula}
+					showLineNumbers
+					wrapLines
+				>
+					{content}
+				</SyntaxHighlighter>
+				<Button className="absolute top-2 right-2" onClick={handleCopy}>
+					{isCopied ? <Check /> : <CopyIcon />}
+				</Button>
+			</div>
 		);
 	}
 );
+
+CodeBlock.displayName = "CodeBlock";
 
 const CodePage = () => {
 	const { fid } = useParams<{ fid: string }>();
@@ -90,7 +136,7 @@ const CodePage = () => {
 								{fileDetails.description}
 							</CardDescription>
 						</CardHeader>
-						<CardContent>
+						<CardContent className="p-2 w-full">
 							<CodeBlock
 								content={fileDetails.content}
 								filetype={fileDetails.filetype}

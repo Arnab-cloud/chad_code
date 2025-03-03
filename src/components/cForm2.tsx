@@ -73,11 +73,11 @@ export default function CodeForm() {
 		try {
 			setIsSubmitting(true);
 			const res = await axios.post<ApiResponse>(`api/addCode`, data);
-			toast(res.data.message);
+			toast.success(res.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 
-			toast(axiosError.response?.data.message);
+			toast.error(axiosError.response?.data.message);
 		} finally {
 			setIsSubmitting(false);
 		}

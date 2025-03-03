@@ -47,11 +47,11 @@ export function CForm() {
 		// console.log(values);
 		try {
 			const res = await axios.post<ApiResponse>(`api/addCode`, values);
-			toast(res.data.message);
+			toast.success(res.data.message);
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 
-			toast(axiosError.response?.data.message);
+			toast.error(axiosError.response?.data.message);
 		}
 	}
 

@@ -11,6 +11,7 @@ import {
 import { ApiResponse } from "@/models/Codes";
 import axios, { AxiosError } from "axios";
 import { Check, CopyIcon } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { memo, useCallback, useEffect, useState } from "react";
 // import dynamic from "next/dynamic";
@@ -20,7 +21,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 
-interface fileDetailsProps {
+export interface fileDetailsProps {
 	filename: string;
 	filetype?: string;
 	content: string;
@@ -131,7 +132,14 @@ const CodePage = () => {
 				<div className="flex items-center justify-center p-4">
 					<Card className="min-w-96 min-h-36">
 						<CardHeader>
-							<CardTitle>{fileDetails.filename}</CardTitle>
+							<CardTitle className="flex flex-row items-center justify-between">
+								<p>{fileDetails.filename}</p>
+								<Button>
+									<Link href={`/f/${fid}/editPage`}>
+										Edit
+									</Link>
+								</Button>
+							</CardTitle>
 							<CardDescription>
 								{fileDetails.description}
 							</CardDescription>

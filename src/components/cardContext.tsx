@@ -6,6 +6,7 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "./ui/context-menu";
+import Link from "next/link";
 // import { createHash } from "crypto";
 // import axios, { AxiosError } from "axios";
 // import { ApiResponse } from "@/models/Codes";
@@ -23,7 +24,7 @@ import {
 
 const CardContext: React.FC<{ children: ReactNode; fid: string }> = ({
 	children,
-	// fid,
+	fid,
 }) => {
 	// const [isProcessing, setIsProcessing] = useState(false);
 	// const deleteCode = useCallback(async () => {
@@ -50,6 +51,15 @@ const CardContext: React.FC<{ children: ReactNode; fid: string }> = ({
 		<ContextMenu>
 			<ContextMenuTrigger>{children}</ContextMenuTrigger>
 			<ContextMenuContent>
+				<ContextMenuItem
+					// onClick={(e) => {
+					// 	e.stopPropagation();
+					// 	deleteCode();
+					// }}
+					asChild
+				>
+					<Link href={`/f/${fid}/editPage`}>Edit</Link>
+				</ContextMenuItem>
 				<ContextMenuItem
 				// onClick={(e) => {
 				// 	e.stopPropagation();

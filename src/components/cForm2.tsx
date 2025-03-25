@@ -37,8 +37,24 @@ const formSchema = z.object({
 
 type formData = z.infer<typeof formSchema>;
 const defaultLan = "plaintext";
+const defaultCode = "// Add your code here";
 
-export default function CodeForm() {
+const defaultValues: formData = {
+	filename: "example",
+	language: defaultLan,
+	code: defaultCode,
+	description: "",
+};
+
+interface codeFromInterFace {
+	id?: string;
+	initialValues?: formData;
+}
+
+const CodeForm: React.FC<codeFromInterFace> = ({
+	id,
+	initialValues = defaultValues,
+}) => {
 	const editorRef = useRef<editor.IStandaloneCodeEditor>(null);
 	const [editorFocused, setEditorFocused] = useState(false);
 	const [lan, setLan] = useState(defaultLan);
@@ -47,12 +63,7 @@ export default function CodeForm() {
 
 	const form = useForm<formData>({
 		resolver: zodResolver(formSchema),
-		defaultValues: {
-			filename: "example",
-			language: defaultLan,
-			code: "// Add your code here",
-			description: "",
-		},
+		defaultValues: initialValues,
 	});
 
 	// Capture the editor instance
@@ -75,10 +86,13 @@ export default function CodeForm() {
 		// Further processing (e.g., sending data to an API) goes here
 		try {
 			setIsSubmitting(true);
-			const res = await axios.post<ApiResponse>(`api/addCode`, data);
+			const res = await axios.post<ApiResponse>(`/api/updateCode`, {
+				...data,
+				id,
+			});
 			toast.success(res.data.message);
 
-			router.push("/addSuccess");
+			router.push(`/f/${id}`);
 			// router.push("/addSuccess");
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
@@ -155,7 +169,7 @@ export default function CodeForm() {
 										height="60vh"
 										defaultLanguage={lan}
 										language={lan}
-										defaultValue="// Add your code here"
+										defaultValue={initialValues.code}
 										onMount={handleEditorDidMount}
 										onChange={field.onChange}
 										options={{
@@ -199,4 +213,6 @@ export default function CodeForm() {
 			</form>
 		</Form>
 	);
-}
+};
+
+export default CodeForm;

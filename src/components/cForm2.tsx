@@ -24,6 +24,8 @@ import axios, { AxiosError } from "axios";
 import { editor } from "monaco-editor";
 import { Loader2 } from "lucide-react";
 import { ApiResponse } from "@/models/Codes";
+import { useRouter } from "next/navigation";
+// import { useRouter } from "next/router";
 
 // Define a schema for our form using Zod
 const formSchema = z.object({
@@ -41,6 +43,7 @@ export default function CodeForm() {
 	const [editorFocused, setEditorFocused] = useState(false);
 	const [lan, setLan] = useState(defaultLan);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const router = useRouter();
 
 	const form = useForm<formData>({
 		resolver: zodResolver(formSchema),
@@ -74,6 +77,9 @@ export default function CodeForm() {
 			setIsSubmitting(true);
 			const res = await axios.post<ApiResponse>(`api/addCode`, data);
 			toast.success(res.data.message);
+
+			router.push("/addSuccess");
+			// router.push("/addSuccess");
 		} catch (error) {
 			const axiosError = error as AxiosError<ApiResponse>;
 

@@ -66,7 +66,7 @@ const CodeBlock = memo(
 					setIsCopied(false);
 				}, 2000);
 			}
-		}, []);
+		}, [content]);
 		// console.log(SyntaxHighlighter.supportedLanguages);
 		return (
 			<div className="relative">
